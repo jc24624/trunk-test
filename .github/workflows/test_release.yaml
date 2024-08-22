@@ -19,13 +19,13 @@ jobs:
           
           if [[ "$LATEST_TAG" != "$CURRENT_TAG" ]]; then
             echo "This release is not the latest. Exiting..."
-            echo "::set-output name=continue::false"
+            echo "continue=false" >> $GITHUB_ENV
             exit 0
           else
-            echo "::set-output name=continue::true"
+            echo "continue=true" >> $GITHUB_ENV
           fi
 
       - name: Test Echo
-        if: steps.check_latest.outputs.continue == 'true'
+        if: env.continue == 'true'
         run: |
           echo "Hello World!"
