@@ -8,13 +8,6 @@ jobs:
   push_to_prod:
     runs-on: ubuntu-latest
     steps:
-      - name: Check if this is a release branch
-        run: |
-          if [[ "${GITHUB_REF}" != refs/heads/release* ]]; then
-            echo "Not a release branch. Exiting..."
-            exit 1
-          fi
-      
       - name: Test Echo
         run: |
           echo "Hello World!"
