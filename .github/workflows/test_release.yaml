@@ -9,9 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: latest
-        uses: thebritican/fetch-latest-release@v2.0.0
+        uses: pozetroninc/github-action-get-latest-release@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          excludes: prerelease, draft
 
       - uses: actions/checkout@v3
         with: 
@@ -19,12 +21,12 @@ jobs:
           
       - name: Check if this is the latest release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           LATEST_RELEASE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
             https://api.github.com/repos/${{ github.repository }}/releases/latest)
           LATEST_TAG=$(echo $LATEST_RELEASE | jq -r .tag_name)
-          CURRENT_TAG=${{ github.event.release.tag_name }}
+          CURRENT_TAG=${{ steps.latest.outputs.tag_name }}
           
           if [[ "$LATEST_TAG" != "$CURRENT_TAG" ]]; then
             echo "This release is not the latest. Exiting..."
