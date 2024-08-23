@@ -8,6 +8,15 @@ jobs:
   push_to_prod:
     runs-on: ubuntu-latest
     steps:
+      - id: latest
+        uses: thebritican/fetch-latest-release@v2.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/checkout@v2
+        with: 
+          ref: ${{ steps.latest.outputs.tag_name }}
+          
       - name: Check if this is the latest release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
