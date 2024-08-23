@@ -11,7 +11,7 @@ jobs:
       - id: latest
         uses: pozetroninc/github-action-get-latest-release@master
         with:
-          token: ${{ github.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           excludes: prerelease, draft
 
